@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 Goddess Portal - Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+        }
+
+        .login-btn:disabled {
+            background: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: linear-gradient(45deg, #ef5350, #f44336);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: linear-gradient(45deg, #66bb6a, #4caf50);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .login-footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .loading-spinner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .github-setup {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .github-setup h3 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+        }
+
+        .github-setup p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .github-setup code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>👑 GODDESS PORTAL</h1>
+            <p>Admin Access Required</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Invalid credentials. Please try again.
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Authentication successful! Redirecting...
+        </div>
+
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="adminUsername">Admin Username</label>
+                <input type="text" id="adminUsername" name="username" placeholder="Enter admin username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="adminPassword">Admin Password</label>
+                <input type="password" id="adminPassword" name="password" placeholder="Enter admin password" required>
+            </div>
+
+            <button type="submit" id="loginBtn" class="login-btn">
+                <span id="loginBtnText">🔐 ACCESS ADMIN PANEL</span>
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <span>Authenticating...</span>
+                </div>
+            </button>
+        </form>
+
+        <div class="github-setup">
+            <h3>🔗 GitHub Integration Setup</h3>
+            <p>To use GitHub integration, you'll need:</p>
+            <p>• A GitHub personal access token with <code>repo</code> permissions</p>
+            <p>• A repository in format <code>username/repository-name</code></p>
+            <p>• Configure these in the admin panel settings after login</p>
+        </div>
+
+        <div class="login-footer">
+            <p>⚠️ Authorized access only. All activities are logged.</p>
+        </div>
+    </div>
+
+    <script>
+        // Default admin credentials (change these in production)
+        const DEFAULT_ADMIN_CREDENTIALS = {
+            username: 'goddess',
+            password: 'elite2024'
+        };
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            authenticateAdmin(username, password);
+        });
+
+        async function authenticateAdmin(username, password) {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtnText.style.display = 'none';
+            loadingSpinner.style.display = 'flex';
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Simulate authentication delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Check credentials
+            if (username === DEFAULT_ADMIN_CREDENTIALS.username && password === DEFAULT_ADMIN_CREDENTIALS.password) {
+                // Success
+                successMessage.style.display = 'block';
+                localStorage.setItem('admin_authenticated', 'true');
+                localStorage.setItem('admin_username', username);
+                localStorage.setItem('admin_login_time', new Date().toISOString());
+                
+                // Log the successful login
+                console.log('Admin authenticated successfully:', {
+                    username: username,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                });
+                
+                // Redirect to admin panel
+                setTimeout(() => {
+                    window.location.href = 'admin-panel.html';
+                }, 1500);
+                
+            } else {
+                // Failed
+                errorMessage.style.display = 'block';
+                
+                // Log the failed attempt
+                console.warn('Failed admin login attempt:', {
+                    username: username,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                });
+                
+                // Reset form
+                loginBtn.disabled = false;
+                loginBtnText.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+                
+                // Clear password field
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        // Check if already authenticated
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('admin_authenticated');
+            if (isAuthenticated === 'true') {
+                // Check if login is still valid (24 hours)
+                const loginTime = localStorage.getItem('admin_login_time');
+                if (loginTime) {
+                    const timeDiff = new Date() - new Date(loginTime);
+                    const hoursDiff = timeDiff / (1000 * 60 * 60);
+                    
+                    if (hoursDiff < 24) {
+                        // Still valid, redirect to admin panel
+                        window.location.href = 'admin-panel.html';
+                        return;
+                    } else {
+                        // Expired, clear authentication
+                        localStorage.removeItem('admin_authenticated');
+                        localStorage.removeItem('admin_username');
+                        localStorage.removeItem('admin_login_time');
+                    }
+                }
+            }
+            
+            // Focus on username field
+            document.getElementById('adminUsername').focus();
+        });
+
+        // Handle Enter key in form fields
+        document.getElementById('adminUsername').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('adminPassword').focus();
+            }
+        });
+
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('adminLoginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>

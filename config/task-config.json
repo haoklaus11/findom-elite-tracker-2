@@ -1,0 +1,47 @@
+{
+  "defaultPoints": 25,
+  "difficulties": ["easy", "medium", "hard", "extreme"],
+  "categories": ["daily", "weekly", "special", "punishment", "proof"],
+  "maxDeadline": 168,
+  "pointsScale": {
+    "easy": 25,
+    "medium": 50,
+    "hard": 100,
+    "extreme": 200
+  },
+  "completionRequirements": {
+    "proofRequired": true,
+    "adminApproval": true,
+    "timeLimit": true
+  },
+  "recurringTypes": {
+    "daily": {
+      "resetInterval": 24,
+      "stackable": false
+    },
+    "weekly": {
+      "resetInterval": 168,
+      "stackable": false
+    },
+    "monthly": {
+      "resetInterval": 744,
+      "stackable": false
+    },
+    "as_needed": {
+      "resetInterval": 0,
+      "stackable": true
+    },
+    "special_event": {
+      "resetInterval": 0,
+      "stackable": false
+    }
+  },
+  "autoApproval": {
+    "enabled": false,
+    "conditions": {
+      "minObedienceLevel": 90,
+      "maxTaskDifficulty": "medium",
+      "requiresProof": false
+    }
+  }
+}

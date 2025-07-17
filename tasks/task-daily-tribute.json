@@ -1,0 +1,23 @@
+{
+  "id": "task_daily_tribute",
+  "title": "Daily Tribute Submission",
+  "description": "Submit your daily tribute to show your devotion and maintain your position in the hierarchy.",
+  "difficulty": "easy",
+  "points": 50,
+  "deadline": 24,
+  "status": "active",
+  "assignedTo": null,
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "completedBy": [],
+  "category": "daily",
+  "requirements": {
+    "minAmount": 25,
+    "proofRequired": true,
+    "recurringType": "daily"
+  },
+  "rewards": {
+    "points": 50,
+    "streak": true,
+    "bonusMultiplier": 1.0
+  }
+}

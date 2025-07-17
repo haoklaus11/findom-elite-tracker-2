@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Chambers - Findom Tracker</title>
+    <link rel="stylesheet" href="popup-spicy-enhanced.css">
+</head>
+<body>
+
+    <!-- Terms of Service Modal -->
+    <div id="tosModal" class="tos-modal" style="display: none;">
+        <div class="tos-modal-content">
+            <div class="tos-header">
+                <h2>🏰 Terms of Service</h2>
+                <p>Please read and accept our Terms of Service to continue</p>
+            </div>
+            
+            <div class="tos-content">
+                <div class="tos-scroll">
+                    <h3>📋 Data Collection & Usage</h3>
+                    <p>By using this Extension, you consent to the collection of:</p>
+                    <ul>
+                        <li><strong>IP Address:</strong> For security and performance purposes</li>
+                        <li><strong>Location:</strong> City, region, and country based on IP</li>
+                        <li><strong>ISP:</strong> Internet Service Provider information</li>
+                        <li><strong>Payment Data:</strong> Processed securely through Throne</li>
+                    </ul>
+                    
+                    <h3>💳 Payment Processing</h3>
+                    <p>Tribute payments are processed through Throne's secure system. All payments are non-refundable once processed.</p>
+                    
+                    <h3>📊 User Responsibilities</h3>
+                    <p>You agree to:</p>
+                    <ul>
+                        <li>Provide accurate information during activation</li>
+                        <li>Follow all rules and complete tasks as specified</li>
+                        <li>Respect the terms and avoid fraudulent activity</li>
+                        <li>Confirm you are 18+ years of age</li>
+                    </ul>
+                    
+                    <h3>🔒 Privacy & Rights</h3>
+                    <p>You have the right to opt-out, request data deletion, and stop using the Extension at any time. We comply with GDPR and CCPA regulations.</p>
+                    
+                    <p class="tos-footer">By clicking "I Accept," you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+                    
+                    <div class="tos-link">
+                        <a href="#" id="viewFullTosLink">📋 View Full Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tos-buttons">
+                <button id="acceptTosButton" class="tos-btn tos-accept">
+                    ✅ I Accept Terms of Service
+                </button>
+                <button id="rejectTosButton" class="tos-btn tos-reject">
+                    ❌ I Do Not Accept
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="authScreen" class="auth-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>🏰 ELITE CHAMBERS</h1>
+                <p class="subtitle">Enter Your Devotion</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="code">Access Code</label>
+                    <input type="password" id="code" name="code" placeholder="Enter access code" required>
+                </div>
+                
+                <button type="submit" id="loginButton" class="enter-button">
+                    <span id="buttonText">👑 ENTER THE CHAMBERS 👑</span>
+                    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        <span>Authenticating...</span>
+                    </div>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>✨ Prepare for your ultimate submission experience ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" class="main-dashboard" style="display: none;">
+        <!-- Profile Section (Top-Left) -->
+        <div class="profile-section">
+            <h1>Welcome back, Pet</h1>
+            <p>Status: <strong>Obedient Pet</strong></p>
+            <p>Time Remaining: <strong>28 days</strong></p>
+
+            <div class="obedience-level">
+                <span>Obedience Level: 72%</span>
+                <div class="obedience-bar">
+                    <div class="obedience-bar-fill" style="width: 72%"></div>
+                </div>
+            </div>
+
+            <div class="session-timer">
+                <span>Session expires in:</span>
+                <div class="timer" id="dashboardTimer">29d 18h 1m 1s</div>
+            </div>
+            
+            <!-- Session Controls -->
+            <div class="session-controls">
+                <button class="session-control-btn logout" id="logoutButton">
+                    🚪 Logout
+                </button>
+            </div>
+            
+            <!-- Progress Tracking -->
+            <div class="progress-section">
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span class="progress-title">📊 Obedience Progress</span>
+                        <span class="progress-count" id="taskProgressCount">0/10</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="taskProgressBar" style="width: 0%;">
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span class="progress-title">🔥 Tribute Progress</span>
+                        <span class="progress-count" id="tributeProgressCount">0/10</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar tribute" id="tributeProgressBar" style="width: 0%;">
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Daily Login Bonus -->
+            <button class="claim-button" id="claimBonusButton">
+                <i class="icon gift"></i>
+                Claim Daily Bonus (+25 Points)
+            </button>
+        </div>
+
+        <!-- Enhanced Command Center with All Functional Buttons -->
+        <div class="command-center">
+            <h2>👑 Command Center</h2>
+            
+            <!-- Tribute Buttons Section -->
+            <div class="tribute-section">
+                <h3>💰 Tribute Options</h3>
+                <div class="tribute-buttons">
+                    <button class="tribute-btn" id="submitTribute25" onclick="submitTribute(25)">
+                        <span class="tribute-icon">�</span>
+                        <span class="tribute-text">Submit Tribute ($25)</span>
+                    </button>
+                    <button class="tribute-btn" id="submitTribute50" onclick="submitTribute(50)">
+                        <span class="tribute-icon">💎</span>
+                        <span class="tribute-text">Submit Tribute ($50)</span>
+                    </button>
+                    <button class="tribute-btn" id="submitTribute75" onclick="submitTribute(75)">
+                        <span class="tribute-icon">💎</span>
+                        <span class="tribute-text">Submit Tribute ($75)</span>
+                    </button>
+                    <button class="tribute-btn" id="submitTribute100" onclick="submitTribute(100)">
+                        <span class="tribute-icon">💎</span>
+                        <span class="tribute-text">Submit Tribute ($100)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Task Management Section -->
+            <div class="task-management">
+                <h3>📋 Task Management</h3>
+                <div class="task-buttons">
+                    <button class="task-btn" id="completeTaskBtn" onclick="completeTask()">
+                        <span class="task-icon">✅</span>
+                        <span class="task-text">Complete Task</span>
+                    </button>
+                    <button class="task-btn" id="submitProofBtn" onclick="openProofSubmission()">
+                        <span class="task-icon">📸</span>
+                        <span class="task-text">Submit Proof</span>
+                    </button>
+                    <button class="task-btn" id="syncEmpireBtn" onclick="syncEmpire()">
+                        <span class="task-icon">⚡</span>
+                        <span class="task-text">Sync Empire</span>
+                    </button>
+                    <button class="task-btn" id="viewCommandsBtn" onclick="viewCommands()">
+                        <span class="task-icon">👑</span>
+                        <span class="task-text">Her Commands</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Proof Submission Modal -->
+            <div class="proof-submission-modal" id="proofModal" style="display: none;">
+                <div class="modal-content">
+                    <h3>📸 Submit Proof of Devotion</h3>
+                    <textarea id="proofText" placeholder="Enter proof details..."></textarea>
+                    <input type="file" id="proofFile" accept="image/*,video/*" />
+                    <div class="modal-buttons">
+                        <button class="submit-btn" onclick="submitProofToDiscord()">Submit Proof</button>
+                        <button class="cancel-btn" onclick="closeProofModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Integrated Tasks Section -->
+        <div class="task-section">
+            <div class="task-header">
+                <h2>🎯 Tasks & Progress</h2>
+                <div class="task-controls">
+                    <button class="task-filter active" data-filter="all">All</button>
+                    <button class="task-filter" data-filter="urgent">Urgent</button>
+                    <button class="task-filter" data-filter="daily">Daily</button>
+                    <button class="task-filter" data-filter="completed">Done</button>
+                </div>
+            </div>
+            
+            <!-- Daily Summary -->
+            <div class="daily-summary">
+                <div class="summary-item">
+                    <span class="summary-number" id="completedTasksToday">3</span>
+                    <span class="summary-label">Completed Today</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-number" id="pendingTasks">2</span>
+                    <span class="summary-label">Pending</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-number" id="totalPoints">1,247</span>
+                    <span class="summary-label">Points</span>
+                </div>
+            </div>
+            
+            <!-- Task List -->
+            <div class="task-list" id="taskList">
+                <!-- Urgent Tasks -->
+                <div class="task-card urgent" data-task-id="1" data-category="urgent">
+                    <div class="task-priority urgent-priority">🚨</div>
+                    <div class="task-icon tribute">�</div>
+                    <div class="task-content">
+                        <div class="task-title">Complete Daily Tribute</div>
+                        <div class="task-description">Show your devotion with today's tribute ($25)</div>
+                        <div class="task-meta">
+                            <span class="task-deadline">Due: Today</span>
+                            <span class="task-points">+50 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn-primary" onclick="handleTaskAction('tribute', 1)">
+                            <span class="btn-text">Tribute</span>
+                            <span class="btn-icon">💰</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="task-card urgent" data-task-id="2" data-category="urgent">
+                    <div class="task-priority urgent-priority">🚨</div>
+                    <div class="task-icon commands">👑</div>
+                    <div class="task-content">
+                        <div class="task-title">New Command Available</div>
+                        <div class="task-description">Check for new instructions and orders</div>
+                        <div class="task-meta">
+                            <span class="task-deadline">Due: Today</span>
+                            <span class="task-points">+25 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn-primary" onclick="handleTaskAction('commands', 2)">
+                            <span class="btn-text">View</span>
+                            <span class="btn-icon">�</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Daily Tasks -->
+                <div class="task-card daily" data-task-id="3" data-category="daily">
+                    <div class="task-priority daily-priority">📅</div>
+                    <div class="task-icon proof">📸</div>
+                    <div class="task-content">
+                        <div class="task-title">Submit Proof of Devotion</div>
+                        <div class="task-description">Upload evidence of completed tribute</div>
+                        <div class="task-meta">
+                            <span class="task-deadline">Due: 6 hours</span>
+                            <span class="task-points">+30 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn-primary" onclick="handleTaskAction('proof', 3)">
+                            <span class="btn-text">Upload</span>
+                            <span class="btn-icon">📸</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="task-card daily" data-task-id="4" data-category="daily">
+                    <div class="task-priority daily-priority">📅</div>
+                    <div class="task-icon sync">⚡</div>
+                    <div class="task-content">
+                        <div class="task-title">Daily Sync Check</div>
+                        <div class="task-description">Synchronize your progress and updates</div>
+                        <div class="task-meta">
+                            <span class="task-deadline">Due: 8 hours</span>
+                            <span class="task-points">+15 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn-primary" onclick="handleTaskAction('sync', 4)">
+                            <span class="btn-text">Sync</span>
+                            <span class="btn-icon">⚡</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Completed Tasks -->
+                <div class="task-card completed" data-task-id="5" data-category="completed">
+                    <div class="task-priority completed-priority">✅</div>
+                    <div class="task-icon bonus">🎁</div>
+                    <div class="task-content">
+                        <div class="task-title">Claimed Daily Bonus</div>
+                        <div class="task-description">Successfully claimed your daily loyalty bonus</div>
+                        <div class="task-meta">
+                            <span class="task-completed">Completed 2 hours ago</span>
+                            <span class="task-points earned">+25 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <div class="task-completion-badge">
+                            <span class="completion-text">Completed</span>
+                            <span class="completion-icon">✅</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="task-card completed" data-task-id="6" data-category="completed">
+                    <div class="task-priority completed-priority">✅</div>
+                    <div class="task-icon orders">📋</div>
+                    <div class="task-content">
+                        <div class="task-title">Reviewed Orders</div>
+                        <div class="task-description">Checked and acknowledged pending orders</div>
+                        <div class="task-meta">
+                            <span class="task-completed">Completed 4 hours ago</span>
+                            <span class="task-points earned">+20 Points</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <div class="task-completion-badge">
+                            <span class="completion-text">Completed</span>
+                            <span class="completion-icon">✅</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Task Progress Bar -->
+            <div class="task-progress-container">
+                <div class="task-progress-header">
+                    <span class="progress-title">Daily Progress</span>
+                    <span class="progress-percentage" id="dailyProgressPercentage">60%</span>
+                </div>
+                <div class="task-progress-bar">
+                    <div class="task-progress-fill" id="dailyProgressFill" style="width: 60%">
+                        <div class="progress-glow"></div>
+                    </div>
+                </div>
+                <div class="task-progress-footer">
+                    <span class="progress-text">3 of 5 tasks completed</span>
+                    <span class="progress-reward">🎁 Bonus at 100%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar (Bottom) -->
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">Points:</span>
+                <span class="status-value" id="pointsDisplay">1,247</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Streak:</span>
+                <span class="status-value" id="streakDisplay">7 days</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Rank:</span>
+                <span class="status-value" id="rankDisplay">Devoted Pet</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../common/memory-leak-monitor.js"></script>
+    <script src="../common/memory-performance-monitor.js"></script>
+    <script src="../common/github-sync.js"></script>
+    <script src="popup-spicy-enhanced.js"></script>
+</body>
+</html>

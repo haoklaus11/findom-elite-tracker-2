@@ -1,0 +1,23 @@
+{
+  "id": "task_weekly_report",
+  "title": "Weekly Progress Report",
+  "description": "Submit a detailed report of your weekly progress, including completed tasks, tribute totals, and areas for improvement.",
+  "difficulty": "medium",
+  "points": 100,
+  "deadline": 168,
+  "status": "active",
+  "assignedTo": null,
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "completedBy": [],
+  "category": "weekly",
+  "requirements": {
+    "minWordCount": 300,
+    "proofRequired": true,
+    "recurringType": "weekly"
+  },
+  "rewards": {
+    "points": 100,
+    "streak": true,
+    "bonusMultiplier": 1.5
+  }
+}

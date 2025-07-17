@@ -1,0 +1,62 @@
+{
+  "taskConfig": {
+    "defaultPoints": 25,
+    "tributeAmounts": [25, 50, 75, 100, 150, 200],
+    "sessionDuration": 30,
+    "maxTasksPerUser": 10,
+    "taskDifficulties": {
+      "easy": {
+        "pointsMultiplier": 1.0,
+        "timeMultiplier": 1.0
+      },
+      "medium": {
+        "pointsMultiplier": 1.5,
+        "timeMultiplier": 1.2
+      },
+      "hard": {
+        "pointsMultiplier": 2.0,
+        "timeMultiplier": 1.5
+      },
+      "extreme": {
+        "pointsMultiplier": 3.0,
+        "timeMultiplier": 2.0
+      }
+    }
+  },
+  "discordConfig": {
+    "webhook": "",
+    "channel": "#tributes",
+    "notifications": {
+      "tributeSubmissions": true,
+      "taskCompletions": true,
+      "newRegistrations": true,
+      "adminAlerts": true
+    }
+  },
+  "syncConfig": {
+    "interval": 15,
+    "autoSync": true,
+    "backupEnabled": true,
+    "compressionEnabled": true
+  },
+  "userConfig": {
+    "defaultObedienceLevel": 0,
+    "maxObedienceLevel": 100,
+    "pointsToLevelRatio": 100,
+    "streakBonusMultiplier": 1.1,
+    "inactivityThreshold": 7
+  },
+  "securityConfig": {
+    "maxLoginAttempts": 5,
+    "sessionTimeout": 86400,
+    "requireProofForTasks": true,
+    "ipLoggingEnabled": true
+  },
+  "paymentConfig": {
+    "platform": "throne",
+    "currency": "USD",
+    "minimumTribute": 25,
+    "maximumTribute": 500,
+    "processingFee": 0.029
+  }
+}

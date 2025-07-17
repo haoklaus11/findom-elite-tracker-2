@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 Goddess Admin Panel - Elite Chambers</title>
+    <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>👑 Goddess Admin Panel</h1>
+                <p>Control your empire with absolute power</p>
+            </div>
+            <div class="admin-controls">
+                <button class="sync-btn" id="syncGitHubBtn" onclick="syncWithGitHub()">
+                    <span class="icon">🔄</span>
+                    Sync with GitHub
+                </button>
+                <button class="logout-btn" id="adminLogoutBtn" onclick="adminLogout()">
+                    <span class="icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="admin-nav">
+            <button class="nav-tab active" data-tab="tasks" onclick="switchTab('tasks')">
+                <span class="icon">📋</span>
+                Task Management
+            </button>
+            <button class="nav-tab" data-tab="users" onclick="switchTab('users')">
+                <span class="icon">👥</span>
+                User Management
+            </button>
+            <button class="nav-tab" data-tab="codes" onclick="switchTab('codes')">
+                <span class="icon">🔑</span>
+                Activation Codes
+            </button>
+            <button class="nav-tab" data-tab="tributes" onclick="switchTab('tributes')">
+                <span class="icon">💰</span>
+                Tribute Tracking
+            </button>
+            <button class="nav-tab" data-tab="settings" onclick="switchTab('settings')">
+                <span class="icon">⚙️</span>
+                Settings
+            </button>
+        </nav>
+
+        <!-- Task Management Tab -->
+        <div class="admin-tab-content active" id="tasks-tab">
+            <div class="section-header">
+                <h2>📋 Task Management</h2>
+                <button class="create-btn" onclick="createNewTask()">
+                    <span class="icon">➕</span>
+                    Create New Task
+                </button>
+            </div>
+
+            <!-- Task Filters -->
+            <div class="task-filters">
+                <button class="filter-btn active" data-filter="all" onclick="filterTasks('all')">All Tasks</button>
+                <button class="filter-btn" data-filter="pending" onclick="filterTasks('pending')">Pending Approval</button>
+                <button class="filter-btn" data-filter="active" onclick="filterTasks('active')">Active</button>
+                <button class="filter-btn" data-filter="completed" onclick="filterTasks('completed')">Completed</button>
+            </div>
+
+            <!-- Tasks List -->
+            <div class="tasks-container" id="tasksContainer">
+                <!-- Tasks will be populated here -->
+            </div>
+
+            <!-- Create Task Modal -->
+            <div class="modal" id="createTaskModal" style="display: none;">
+                <div class="modal-content">
+                    <h3>Create New Task</h3>
+                    <form id="createTaskForm">
+                        <div class="form-group">
+                            <label>Task Title:</label>
+                            <input type="text" id="taskTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea id="taskDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Difficulty:</label>
+                            <select id="taskDifficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                                <option value="extreme">Extreme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Points Reward:</label>
+                            <input type="number" id="taskPoints" min="1" max="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Deadline (hours):</label>
+                            <input type="number" id="taskDeadline" min="1" max="168" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Assign to User (optional):</label>
+                            <select id="taskAssignUser">
+                                <option value="">All Users</option>
+                                <!-- Users will be populated here -->
+                            </select>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="submit-btn">Create Task</button>
+                            <button type="button" class="cancel-btn" onclick="closeModal('createTaskModal')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Tab -->
+        <div class="admin-tab-content" id="users-tab">
+            <div class="section-header">
+                <h2>👥 User Management</h2>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalUsers">0</span>
+                        <span class="stat-label">Total Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="activeUsers">0</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalTributes">$0</span>
+                        <span class="stat-label">Total Tributes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Search -->
+            <div class="user-search">
+                <input type="text" id="userSearchInput" placeholder="Search users..." onkeyup="searchUsers()">
+                <button class="search-btn" onclick="searchUsers()">
+                    <span class="icon">🔍</span>
+                    Search
+                </button>
+            </div>
+
+            <!-- Users List -->
+            <div class="users-container" id="usersContainer">
+                <!-- Users will be populated here -->
+            </div>
+        </div>
+
+        <!-- Activation Codes Tab -->
+        <div class="admin-tab-content" id="codes-tab">
+            <div class="section-header">
+                <h2>🔑 Activation Code Management</h2>
+                <button class="create-btn" onclick="generateActivationCode()">
+                    <span class="icon">✨</span>
+                    Generate New Code
+                </button>
+            </div>
+
+            <!-- Code Generation Options -->
+            <div class="code-options">
+                <div class="option-group">
+                    <label>Code Type:</label>
+                    <select id="codeType">
+                        <option value="standard">Standard Access</option>
+                        <option value="premium">Premium Access</option>
+                        <option value="vip">VIP Access</option>
+                        <option value="lifetime">Lifetime Access</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label>Duration (days):</label>
+                    <input type="number" id="codeDuration" min="1" max="365" value="30">
+                </div>
+                <div class="option-group">
+                    <label>Max Uses:</label>
+                    <input type="number" id="codeMaxUses" min="1" max="100" value="1">
+                </div>
+            </div>
+
+            <!-- Generated Codes List -->
+            <div class="codes-container" id="codesContainer">
+                <!-- Generated codes will be populated here -->
+            </div>
+        </div>
+
+        <!-- Tribute Tracking Tab -->
+        <div class="admin-tab-content" id="tributes-tab">
+            <div class="section-header">
+                <h2>💰 Tribute Tracking</h2>
+                <div class="tribute-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalTributeAmount">$0</span>
+                        <span class="stat-label">Total Collected</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="todayTributes">$0</span>
+                        <span class="stat-label">Today's Tributes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="averageTribute">$0</span>
+                        <span class="stat-label">Average Tribute</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tribute Filters -->
+            <div class="tribute-filters">
+                <button class="filter-btn active" data-filter="all" onclick="filterTributes('all')">All Tributes</button>
+                <button class="filter-btn" data-filter="today" onclick="filterTributes('today')">Today</button>
+                <button class="filter-btn" data-filter="week" onclick="filterTributes('week')">This Week</button>
+                <button class="filter-btn" data-filter="month" onclick="filterTributes('month')">This Month</button>
+            </div>
+
+            <!-- Tributes List -->
+            <div class="tributes-container" id="tributesContainer">
+                <!-- Tributes will be populated here -->
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="admin-tab-content" id="settings-tab">
+            <div class="section-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+
+            <!-- GitHub Integration Settings -->
+            <div class="settings-section">
+                <h3>🔗 GitHub Integration</h3>
+                <div class="setting-item">
+                    <label>GitHub Repository:</label>
+                    <input type="text" id="githubRepo" placeholder="username/repository-name">
+                </div>
+                <div class="setting-item">
+                    <label>GitHub Token:</label>
+                    <input type="password" id="githubToken" placeholder="your-github-token">
+                </div>
+                <div class="setting-item">
+                    <label>Auto-sync Interval (minutes):</label>
+                    <input type="number" id="syncInterval" min="5" max="60" value="15">
+                </div>
+                <button class="save-btn" onclick="saveGitHubSettings()">Save GitHub Settings</button>
+            </div>
+
+            <!-- Discord Integration Settings -->
+            <div class="settings-section">
+                <h3>💬 Discord Integration</h3>
+                <div class="setting-item">
+                    <label>Discord Webhook URL:</label>
+                    <input type="url" id="discordWebhook" placeholder="https://discord.com/api/webhooks/...">
+                </div>
+                <div class="setting-item">
+                    <label>Notification Channel:</label>
+                    <input type="text" id="discordChannel" placeholder="#tributes">
+                </div>
+                <button class="save-btn" onclick="saveDiscordSettings()">Save Discord Settings</button>
+            </div>
+
+            <!-- Extension Settings -->
+            <div class="settings-section">
+                <h3>🔧 Extension Settings</h3>
+                <div class="setting-item">
+                    <label>Default Task Points:</label>
+                    <input type="number" id="defaultPoints" min="1" max="500" value="25">
+                </div>
+                <div class="setting-item">
+                    <label>Session Duration (days):</label>
+                    <input type="number" id="sessionDuration" min="1" max="365" value="30">
+                </div>
+                <div class="setting-item">
+                    <label>Tribute Amounts:</label>
+                    <input type="text" id="tributeAmounts" placeholder="25,50,75,100" value="25,50,75,100">
+                </div>
+                <button class="save-btn" onclick="saveExtensionSettings()">Save Extension Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notification-container" id="notificationContainer">
+        <!-- Notifications will appear here -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin-panel.js"></script>
+    <script src="github-integration.js"></script>
+</body>
+</html>

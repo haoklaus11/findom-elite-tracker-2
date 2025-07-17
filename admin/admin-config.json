@@ -1,0 +1,51 @@
+{
+  "autoApprovalEnabled": false,
+  "requireProofForTasks": true,
+  "maxUsersPerCode": 1,
+  "defaultCodeDuration": 30,
+  "adminSettings": {
+    "sessionTimeout": 86400,
+    "maxLoginAttempts": 5,
+    "requiredPermissions": ["task_management", "user_management", "code_generation"],
+    "logging": {
+      "enabled": true,
+      "logLevel": "info",
+      "retentionDays": 30
+    }
+  },
+  "taskManagement": {
+    "autoApprovalThreshold": 80,
+    "maxTasksPerUser": 15,
+    "defaultTaskExpiry": 72,
+    "approvalRequired": true
+  },
+  "userManagement": {
+    "autoDeactivateAfter": 30,
+    "maxInactiveUsers": 1000,
+    "requireEmailVerification": false,
+    "defaultUserRole": "standard"
+  },
+  "codeGeneration": {
+    "defaultLength": 12,
+    "includeSpecialChars": false,
+    "expiryNotification": true,
+    "maxGeneratedCodes": 100
+  },
+  "notifications": {
+    "emailEnabled": false,
+    "discordEnabled": true,
+    "pushEnabled": false,
+    "adminAlerts": {
+      "newUserRegistration": true,
+      "taskCompletion": true,
+      "tributeSubmission": true,
+      "systemErrors": true
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "frequency": "daily",
+    "retention": 7,
+    "compression": true
+  }
+}

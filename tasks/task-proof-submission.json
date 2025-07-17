@@ -1,0 +1,24 @@
+{
+  "id": "task_proof_submission",
+  "title": "Proof of Devotion",
+  "description": "Submit photographic or video proof of your completed tribute or task as evidence of your obedience.",
+  "difficulty": "easy",
+  "points": 30,
+  "deadline": 6,
+  "status": "active",
+  "assignedTo": null,
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "completedBy": [],
+  "category": "proof",
+  "requirements": {
+    "fileTypes": ["image/jpeg", "image/png", "video/mp4"],
+    "maxFileSize": 10485760,
+    "proofRequired": true,
+    "recurringType": "as_needed"
+  },
+  "rewards": {
+    "points": 30,
+    "streak": false,
+    "bonusMultiplier": 1.0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Findom Elite Tracker 2",
+  "author": "Elite Developer",
+  "homepage_url": "https://elitefindomtracker.com",
+  "update_url": "https://elitefindomtracker.com/updates.json",    "version": "2.1.0",
+  "description": "Financial Domination Elite Tracking - Enhanced with Activation System",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "notifications",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.throne.com/*",
+    "*://*.cashapp.com/*",
+    "*://*.venmo.com/*",
+    "*://*.paypal.com/*",
+    "*://*.amazon.com/*",
+    "*://ipapi.co/*"
+  ],
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup-spicy-enhanced.html"
+  },
+  "options_page": "src/options/options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.throne.com/*",
+        "*://*.cashapp.com/*",
+        "*://*.venmo.com/*",
+        "*://*.paypal.com/*",
+        "*://*.amazon.com/*"
+      ],
+      "js": ["src/content/content.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ]
+}
