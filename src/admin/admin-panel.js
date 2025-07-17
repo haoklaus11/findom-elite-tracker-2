@@ -648,4 +648,308 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('defaultPoints').value = settings.defaultPoints || 25;
     document.getElementById('sessionDuration').value = settings.sessionDuration || 30;
     document.getElementById('tributeAmounts').value = settings.tributeAmounts?.join(',') || '25,50,75,100';
+    
+    // Load performance settings
+    if (settings.performance) {
+        document.getElementById('monitoringFrequency').value = settings.performance.monitoringFrequency || 30;
+        document.getElementById('memoryThreshold').value = settings.performance.memoryThreshold || 50;
+        document.getElementById('cpuThreshold').value = settings.performance.cpuThreshold || 80;
+        document.getElementById('autoCleanup').value = settings.performance.autoCleanup || 'enabled';
+    }
+    
+    // Initialize performance monitoring
+    initializePerformanceMonitoring();
 });
+
+// ===== PERFORMANCE MONITORING FUNCTIONS =====
+
+// Open performance dashboard
+function openPerformanceDashboard() {
+    if (window.performanceDashboard) {
+        window.performanceDashboard.show();
+    } else {
+        showNotification('Performance dashboard not available', 'error');
+    }
+}
+
+// Run performance check
+function runPerformanceCheck() {
+    try {
+        const performanceData = {
+            memory: null,
+            cpu: null,
+            operations: null,
+            leaks: null
+        };
+        
+        // Get memory data
+        if (window.performanceOptimizer) {
+            performanceData.memory = window.performanceOptimizer.getCurrentMemoryUsage();
+        }
+        
+        // Get CPU data
+        if (window.cpuUsageMonitor) {
+            performanceData.cpu = window.cpuUsageMonitor.getUsageReport();
+        }
+        
+        // Get operations data
+        if (window.performanceOptimizer) {
+            performanceData.operations = window.performanceOptimizer.getPerformanceStats();
+        }
+        
+        // Get memory leak data
+        if (window.memoryLeakDetector) {
+            performanceData.leaks = window.memoryLeakDetector.getLeakReport();
+        }
+        
+        // Update performance overview
+        updatePerformanceOverview(performanceData);
+        
+        showNotification('Performance check completed', 'success');
+    } catch (error) {
+        console.error('Performance check failed:', error);
+        showNotification('Performance check failed', 'error');
+    }
+}
+
+// Update performance overview
+function updatePerformanceOverview(data) {
+    // Update memory usage
+    if (data.memory) {
+        const memoryMB = Math.round(data.memory.used / 1024 / 1024);
+        const memoryPercentage = Math.round((data.memory.used / data.memory.limit) * 100);
+        
+        document.getElementById('memoryUsageValue').textContent = memoryMB + ' MB';
+        
+        const memoryStatus = document.getElementById('memoryUsageStatus');
+        if (memoryPercentage > 80) {
+            memoryStatus.textContent = 'Critical';
+            memoryStatus.className = 'perf-status critical';
+        } else if (memoryPercentage > 60) {
+            memoryStatus.textContent = 'Warning';
+            memoryStatus.className = 'perf-status warning';
+        } else {
+            memoryStatus.textContent = 'Normal';
+            memoryStatus.className = 'perf-status normal';
+        }
+    }
+    
+    // Update CPU usage
+    if (data.cpu) {
+        document.getElementById('cpuUsageValue').textContent = Math.round(data.cpu.current) + '%';
+        
+        const cpuStatus = document.getElementById('cpuUsageStatus');
+        if (data.cpu.level === 'critical' || data.cpu.level === 'emergency') {
+            cpuStatus.textContent = 'Critical';
+            cpuStatus.className = 'perf-status critical';
+        } else if (data.cpu.level === 'warning') {
+            cpuStatus.textContent = 'Warning';
+            cpuStatus.className = 'perf-status warning';
+        } else {
+            cpuStatus.textContent = 'Normal';
+            cpuStatus.className = 'perf-status normal';
+        }
+    }
+    
+    // Update operations
+    if (data.operations) {
+        const totalOps = (data.operations.activeTimers || 0) + 
+                        (data.operations.activeListeners || 0) + 
+                        (data.operations.activeObservers || 0);
+        
+        document.getElementById('operationsValue').textContent = totalOps;
+        
+        const opsStatus = document.getElementById('operationsStatus');
+        if (totalOps > 100) {
+            opsStatus.textContent = 'High';
+            opsStatus.className = 'perf-status high';
+        } else if (totalOps > 50) {
+            opsStatus.textContent = 'Medium';
+            opsStatus.className = 'perf-status medium';
+        } else {
+            opsStatus.textContent = 'Low';
+            opsStatus.className = 'perf-status low';
+        }
+    }
+    
+    // Update memory leaks
+    if (data.leaks) {
+        const leakCount = data.leaks.detectedLeaks ? data.leaks.detectedLeaks.length : 0;
+        
+        document.getElementById('leaksValue').textContent = leakCount;
+        
+        const leaksStatus = document.getElementById('leaksStatus');
+        if (leakCount > 0) {
+            leaksStatus.textContent = 'Detected';
+            leaksStatus.className = 'perf-status detected';
+        } else {
+            leaksStatus.textContent = 'None';
+            leaksStatus.className = 'perf-status none';
+        }
+    }
+    
+    // Update recommendations
+    updatePerformanceRecommendations(data);
+}
+
+// Update performance recommendations
+function updatePerformanceRecommendations(data) {
+    const recommendations = [];
+    
+    // Memory recommendations
+    if (data.memory) {
+        const memoryPercentage = (data.memory.used / data.memory.limit) * 100;
+        if (memoryPercentage > 80) {
+            recommendations.push({
+                icon: '💾',
+                text: 'Memory usage is high. Consider clearing caches or reducing data storage.',
+                level: 'warning'
+            });
+        }
+    }
+    
+    // CPU recommendations
+    if (data.cpu && data.cpu.level === 'warning') {
+        recommendations.push({
+            icon: '⚡',
+            text: 'CPU usage is elevated. Consider reducing animation frequency or background operations.',
+            level: 'warning'
+        });
+    }
+    
+    // Operations recommendations
+    if (data.operations) {
+        if (data.operations.activeTimers > 20) {
+            recommendations.push({
+                icon: '🔧',
+                text: 'High number of active timers. Consider consolidating timer operations.',
+                level: 'info'
+            });
+        }
+        if (data.operations.activeListeners > 100) {
+            recommendations.push({
+                icon: '🔧',
+                text: 'High number of event listeners. Consider using event delegation.',
+                level: 'info'
+            });
+        }
+    }
+    
+    // Memory leak recommendations
+    if (data.leaks && data.leaks.detectedLeaks && data.leaks.detectedLeaks.length > 0) {
+        recommendations.push({
+            icon: '🚨',
+            text: 'Memory leaks detected. Automatic cleanup will be performed.',
+            level: 'error'
+        });
+    }
+    
+    // Update recommendations display
+    const recommendationsContainer = document.getElementById('performanceRecommendations');
+    if (recommendations.length === 0) {
+        recommendationsContainer.innerHTML = `
+            <div class="recommendation-item">
+                <div class="recommendation-icon">✅</div>
+                <div class="recommendation-text">System performance is optimal</div>
+            </div>
+        `;
+    } else {
+        recommendationsContainer.innerHTML = recommendations.map(rec => `
+            <div class="recommendation-item ${rec.level}">
+                <div class="recommendation-icon">${rec.icon}</div>
+                <div class="recommendation-text">${rec.text}</div>
+            </div>
+        `).join('');
+    }
+}
+
+// Clear performance data
+function clearPerformanceData() {
+    try {
+        // Clear performance optimizer data
+        if (window.performanceOptimizer) {
+            window.performanceOptimizer.performCleanup();
+        }
+        
+        // Clear memory leak detector data
+        if (window.memoryLeakDetector) {
+            window.memoryLeakDetector.snapshots = [];
+            window.memoryLeakDetector.detectedLeaks.clear();
+        }
+        
+        // Clear CPU usage monitor data
+        if (window.cpuUsageMonitor) {
+            window.cpuUsageMonitor.measurements = [];
+        }
+        
+        // Clear performance dashboard data
+        if (window.performanceDashboard) {
+            window.performanceDashboard.clearData();
+        }
+        
+        // Reset performance overview
+        document.getElementById('memoryUsageValue').textContent = '0 MB';
+        document.getElementById('cpuUsageValue').textContent = '0%';
+        document.getElementById('operationsValue').textContent = '0';
+        document.getElementById('leaksValue').textContent = '0';
+        
+        // Reset status indicators
+        document.getElementById('memoryUsageStatus').textContent = 'Normal';
+        document.getElementById('cpuUsageStatus').textContent = 'Normal';
+        document.getElementById('operationsStatus').textContent = 'Low';
+        document.getElementById('leaksStatus').textContent = 'None';
+        
+        showNotification('Performance data cleared', 'success');
+    } catch (error) {
+        console.error('Failed to clear performance data:', error);
+        showNotification('Failed to clear performance data', 'error');
+    }
+}
+
+// Save performance settings
+function savePerformanceSettings() {
+    try {
+        const settings = {
+            monitoringFrequency: document.getElementById('monitoringFrequency').value,
+            memoryThreshold: document.getElementById('memoryThreshold').value,
+            cpuThreshold: document.getElementById('cpuThreshold').value,
+            autoCleanup: document.getElementById('autoCleanup').value
+        };
+        
+        // Apply settings to performance monitors
+        if (window.performanceOptimizer) {
+            window.performanceOptimizer.memoryThreshold = settings.memoryThreshold * 1024 * 1024;
+        }
+        
+        if (window.cpuUsageMonitor) {
+            window.cpuUsageMonitor.thresholds.warning = settings.cpuThreshold;
+            window.cpuUsageMonitor.measurementInterval = settings.monitoringFrequency * 1000;
+        }
+        
+        // Save settings
+        window.adminPanel.settings.performance = settings;
+        window.adminPanel.saveSettings();
+        
+        showNotification('Performance settings saved', 'success');
+    } catch (error) {
+        console.error('Failed to save performance settings:', error);
+        showNotification('Failed to save performance settings', 'error');
+    }
+}
+
+// Initialize performance monitoring
+function initializePerformanceMonitoring() {
+    // Run initial performance check
+    setTimeout(() => {
+        runPerformanceCheck();
+    }, 1000);
+    
+    // Set up automatic performance updates
+    setInterval(() => {
+        if (window.adminPanel.currentTab === 'performance') {
+            runPerformanceCheck();
+        }
+    }, 10000); // Update every 10 seconds
+}
+
+// ===== END PERFORMANCE MONITORING FUNCTIONS =====

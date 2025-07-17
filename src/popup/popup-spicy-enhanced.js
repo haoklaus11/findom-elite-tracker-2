@@ -1,8 +1,8 @@
 // 🔥 SPICY FINDOM/FEMDOM ENHANCED POPUP SCRIPT 🔥
 console.log('=== SPICY ENHANCED POPUP LOADING ===');
 
-// ===== ENHANCED MEMORY MANAGEMENT SYSTEM =====
-// Works in both Chrome Extension and VS Code development environments
+// ===== ENHANCED PERFORMANCE OPTIMIZATION SYSTEM =====
+// Advanced CPU and memory leak prevention
 
 // Environment detection
 const isExtensionEnvironment = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
@@ -14,6 +14,154 @@ console.log('🔧 Environment detection:', {
     vscode: isVSCodeEnvironment,
     development: isDevelopmentMode
 });
+
+// Performance optimization initialization
+let performanceOptimizer = null;
+let memoryLeakDetector = null;
+let cpuUsageMonitor = null;
+
+// Initialize performance optimization system
+function initializePerformanceSystem() {
+    try {
+        // Use global performance optimizer if available
+        if (typeof window.performanceOptimizer !== 'undefined') {
+            performanceOptimizer = window.performanceOptimizer;
+            console.log('✅ Performance optimizer initialized');
+        }
+        
+        // Use global memory leak detector if available
+        if (typeof window.memoryLeakDetector !== 'undefined') {
+            memoryLeakDetector = window.memoryLeakDetector;
+            console.log('✅ Memory leak detector initialized');
+        }
+        
+        // Use global CPU usage monitor if available
+        if (typeof window.cpuUsageMonitor !== 'undefined') {
+            cpuUsageMonitor = window.cpuUsageMonitor;
+            console.log('✅ CPU usage monitor initialized');
+        }
+        
+        // Setup performance monitoring
+        setupPerformanceMonitoring();
+        
+        console.log('🚀 Performance optimization system fully initialized');
+    } catch (error) {
+        console.error('❌ Error initializing performance system:', error);
+        // Fallback to basic optimization
+        setupBasicPerformanceOptimization();
+    }
+}
+
+// Setup performance monitoring
+function setupPerformanceMonitoring() {
+    // Monitor performance every 30 seconds
+    const performanceCheck = () => {
+        if (performanceOptimizer) {
+            const stats = performanceOptimizer.getPerformanceStats();
+            
+            // Log performance stats in development mode
+            if (isDevelopmentMode) {
+                console.log('📊 Performance stats:', stats);
+            }
+            
+            // Take action if performance is degraded
+            if (stats.memoryUsage && stats.memoryUsage.used > 50 * 1024 * 1024) {
+                console.warn('⚠️ High memory usage detected, performing cleanup...');
+                performanceOptimizer.performCleanup();
+            }
+        }
+        
+        if (cpuUsageMonitor) {
+            const cpuReport = cpuUsageMonitor.getUsageReport();
+            
+            // Adjust operations based on CPU usage
+            if (cpuReport.level === 'warning' || cpuReport.level === 'critical') {
+                console.warn('⚠️ High CPU usage detected:', cpuReport.current + '%');
+                throttleOperations();
+            }
+        }
+    };
+    
+    // Run performance check
+    performanceCheck();
+    
+    // Schedule regular performance checks
+    if (performanceOptimizer) {
+        performanceOptimizer.createInterval(performanceCheck, 30000, 'performanceCheck');
+    } else {
+        setInterval(performanceCheck, 30000);
+    }
+}
+
+// Throttle operations during high CPU usage
+function throttleOperations() {
+    // Reduce animation frequency
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    animatedElements.forEach(element => {
+        element.style.animationDuration = '2s'; // Slow down animations
+    });
+    
+    // Reduce update frequency
+    if (window.updateProgressBars) {
+        window.updateProgressBars = throttle(window.updateProgressBars, 2000);
+    }
+    
+    if (window.updateTaskList) {
+        window.updateTaskList = throttle(window.updateTaskList, 3000);
+    }
+}
+
+// Throttle function utility
+function throttle(func, delay) {
+    let timeoutId;
+    let lastExecTime = 0;
+    return function (...args) {
+        const currentTime = Date.now();
+        
+        if (currentTime - lastExecTime > delay) {
+            func.apply(this, args);
+            lastExecTime = currentTime;
+        } else {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+                lastExecTime = Date.now();
+            }, delay - (currentTime - lastExecTime));
+        }
+    };
+}
+
+// Basic performance optimization fallback
+function setupBasicPerformanceOptimization() {
+    console.log('⚠️ Using basic performance optimization fallback');
+    
+    // Basic memory cleanup
+    window.addEventListener('beforeunload', () => {
+        // Clear all intervals and timeouts
+        for (let i = 1; i < 99999; i++) {
+            clearInterval(i);
+            clearTimeout(i);
+        }
+        
+        // Clear caches
+        if (window.caches) {
+            caches.keys().then(names => {
+                names.forEach(name => caches.delete(name));
+            });
+        }
+    });
+    
+    // Basic memory monitoring
+    setInterval(() => {
+        if (performance.memory && performance.memory.usedJSHeapSize > 50 * 1024 * 1024) {
+            console.warn('⚠️ High memory usage detected');
+            // Force garbage collection if available
+            if (window.gc) {
+                window.gc();
+            }
+        }
+    }, 60000);
+}
 
 // Memory monitoring initialization
 const useMemoryMonitor = typeof memoryMonitor !== 'undefined';
@@ -200,6 +348,22 @@ function setupEnvironmentCleanup() {
 function cleanupMemoryLeaks() {
     console.log('🧹 Starting comprehensive memory cleanup...');
     
+    // Cleanup performance optimization system
+    if (performanceOptimizer) {
+        performanceOptimizer.performCleanup();
+        console.log('✅ Performance optimizer cleaned up');
+    }
+    
+    if (memoryLeakDetector) {
+        memoryLeakDetector.performCleanup();
+        console.log('✅ Memory leak detector cleaned up');
+    }
+    
+    if (cpuUsageMonitor) {
+        cpuUsageMonitor.performCleanup();
+        console.log('✅ CPU usage monitor cleaned up');
+    }
+    
     // Cleanup global session timer
     if (sessionTimerInterval) {
         clearInterval(sessionTimerInterval);
@@ -224,6 +388,12 @@ function cleanupMemoryLeaks() {
         cleanupExtensionResources();
     } else if (isVSCodeEnvironment) {
         cleanupVSCodeResources();
+    }
+    
+    // Force garbage collection if available
+    if (window.gc) {
+        window.gc();
+        console.log('✅ Garbage collection forced');
     }
     
     console.log('✅ Memory cleanup completed');
@@ -3198,7 +3368,10 @@ function initializeTaskSystemOnLoad() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🔥 DOM loaded, initializing spicy popup...');
     
-    // Initialize memory tracker first
+    // Initialize performance optimization system first
+    initializePerformanceSystem();
+    
+    // Initialize memory tracker
     initializeMemoryTracker();
     
     // Initialize session manager
@@ -3229,6 +3402,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('📊 Initial memory stats:', globalMemoryTracker.getMemoryStats());
     }
     
+    // Log performance statistics if available
+    if (performanceOptimizer) {
+        console.log('⚡ Performance stats:', performanceOptimizer.getPerformanceStats());
+    }
+    
     console.log('🔥 === SPICY ENHANCED POPUP READY ===');
 });
 
@@ -3240,7 +3418,10 @@ if (document.readyState === 'loading') {
     // DOM is already loaded, initialize immediately
     console.log('🚀 DOM already loaded, initializing immediately...');
     
-    // Initialize memory tracker first
+    // Initialize performance optimization system first
+    initializePerformanceSystem();
+    
+    // Initialize memory tracker
     initializeMemoryTracker();
     
     // Initialize session manager

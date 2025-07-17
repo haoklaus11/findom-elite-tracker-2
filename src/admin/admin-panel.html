@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>👑 Goddess Admin Panel - Elite Chambers</title>
     <link rel="stylesheet" href="admin-panel.css">
+    <link rel="stylesheet" href="../common/performance-dashboard.css">
 </head>
 <body>
     <div class="admin-container">
@@ -43,6 +44,10 @@
             <button class="nav-tab" data-tab="tributes" onclick="switchTab('tributes')">
                 <span class="icon">💰</span>
                 Tribute Tracking
+            </button>
+            <button class="nav-tab" data-tab="performance" onclick="switchTab('performance')">
+                <span class="icon">📊</span>
+                Performance Monitor
             </button>
             <button class="nav-tab" data-tab="settings" onclick="switchTab('settings')">
                 <span class="icon">⚙️</span>
@@ -225,6 +230,115 @@
             </div>
         </div>
 
+        <!-- Performance Monitor Tab -->
+        <div class="admin-tab-content" id="performance-tab">
+            <div class="section-header">
+                <h2>📊 Performance Monitor</h2>
+                <div class="performance-actions">
+                    <button class="performance-btn" onclick="openPerformanceDashboard()">
+                        <span class="icon">📈</span>
+                        Open Dashboard
+                    </button>
+                    <button class="performance-btn" onclick="runPerformanceCheck()">
+                        <span class="icon">🔍</span>
+                        Run Check
+                    </button>
+                    <button class="performance-btn" onclick="clearPerformanceData()">
+                        <span class="icon">🧹</span>
+                        Clear Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Performance Overview -->
+            <div class="performance-overview">
+                <div class="perf-card">
+                    <div class="perf-icon">💾</div>
+                    <div class="perf-info">
+                        <div class="perf-title">Memory Usage</div>
+                        <div class="perf-value" id="memoryUsageValue">0 MB</div>
+                        <div class="perf-status" id="memoryUsageStatus">Normal</div>
+                    </div>
+                </div>
+                
+                <div class="perf-card">
+                    <div class="perf-icon">⚡</div>
+                    <div class="perf-info">
+                        <div class="perf-title">CPU Usage</div>
+                        <div class="perf-value" id="cpuUsageValue">0%</div>
+                        <div class="perf-status" id="cpuUsageStatus">Normal</div>
+                    </div>
+                </div>
+                
+                <div class="perf-card">
+                    <div class="perf-icon">🔧</div>
+                    <div class="perf-info">
+                        <div class="perf-title">Active Operations</div>
+                        <div class="perf-value" id="operationsValue">0</div>
+                        <div class="perf-status" id="operationsStatus">Low</div>
+                    </div>
+                </div>
+                
+                <div class="perf-card">
+                    <div class="perf-icon">🚨</div>
+                    <div class="perf-info">
+                        <div class="perf-title">Memory Leaks</div>
+                        <div class="perf-value" id="leaksValue">0</div>
+                        <div class="perf-status" id="leaksStatus">None</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Recommendations -->
+            <div class="performance-recommendations">
+                <h3>💡 Performance Recommendations</h3>
+                <div class="recommendations-list" id="performanceRecommendations">
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">✅</div>
+                        <div class="recommendation-text">System performance is optimal</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance History -->
+            <div class="performance-history">
+                <h3>📈 Performance History</h3>
+                <div class="history-chart" id="performanceChart">
+                    <canvas id="perfHistoryCanvas" width="600" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- Performance Settings -->
+            <div class="performance-settings">
+                <h3>⚙️ Performance Settings</h3>
+                <div class="setting-item">
+                    <label>Monitoring Frequency:</label>
+                    <select id="monitoringFrequency">
+                        <option value="5">5 seconds</option>
+                        <option value="10">10 seconds</option>
+                        <option value="30" selected>30 seconds</option>
+                        <option value="60">1 minute</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Memory Threshold (MB):</label>
+                    <input type="number" id="memoryThreshold" min="10" max="500" value="50">
+                </div>
+                <div class="setting-item">
+                    <label>CPU Threshold (%):</label>
+                    <input type="number" id="cpuThreshold" min="10" max="100" value="80">
+                </div>
+                <div class="setting-item">
+                    <label>Auto-cleanup:</label>
+                    <select id="autoCleanup">
+                        <option value="enabled" selected>Enabled</option>
+                        <option value="disabled">Disabled</option>
+                    </select>
+                </div>
+                <button class="save-btn" onclick="savePerformanceSettings()">Save Performance Settings</button>
+            </div>
+        </div>
+
         <!-- Settings Tab -->
         <div class="admin-tab-content" id="settings-tab">
             <div class="section-header">
@@ -289,6 +403,10 @@
     </div>
 
     <!-- Scripts -->
+    <script src="../common/performance-optimizer.js"></script>
+    <script src="../common/memory-leak-detector.js"></script>
+    <script src="../common/cpu-usage-monitor.js"></script>
+    <script src="../common/performance-dashboard.js"></script>
     <script src="admin-panel.js"></script>
     <script src="github-integration.js"></script>
 </body>
